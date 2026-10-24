@@ -46,7 +46,7 @@ On Windows, set the Git Bash path if needed. Keep optional npm dependencies enab
 ```powershell
 npm run sample:env -- dispatch
 npm run sample:env -- auto
-npm run sample:env -- dispatchow-one
+npm run sample:env -- frontmatter
 npm run sample:env -- release
 npm test
 ```
