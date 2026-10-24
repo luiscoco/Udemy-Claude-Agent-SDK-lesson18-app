@@ -1,0 +1,273 @@
+{
+  "lanes": [
+    "Student UI",
+    "Node host",
+    "SDK + Claude",
+    "Read guard",
+    "Private files"
+  ],
+  "arrows": [
+    [
+      0,
+      1,
+      "1. Validate the editable description"
+    ],
+    [
+      1,
+      4,
+      "2. Build YAML frontmatter and Markdown"
+    ],
+    [
+      1,
+      4,
+      "3. Choose project or personal location"
+    ],
+    [
+      1,
+      4,
+      "4. Save the authored skill files"
+    ],
+    [
+      1,
+      4,
+      "5. Export actual classroom Git history"
+    ],
+    [
+      1,
+      2,
+      "6. Select the matching discovery source"
+    ],
+    [
+      1,
+      2,
+      "7. Pre-approve through code or frontmatter"
+    ],
+    [
+      2,
+      1,
+      "8. Enforce the host tool boundary"
+    ],
+    [
+      1,
+      2,
+      "9. Choose slash dispatch or a natural request"
+    ],
+    [
+      1,
+      2,
+      "10. Start the real SDK query"
+    ],
+    [
+      2,
+      1,
+      "11. Record completed tools independently"
+    ],
+    [
+      1,
+      4,
+      "12. Verify the required data Read"
+    ],
+    [
+      1,
+      0,
+      "13. Render findings as readable content"
+    ]
+  ],
+  "steps": [
+    {
+      "number": 1,
+      "title": "Validate the editable description",
+      "source": "src/agent.ts",
+      "code": "c=validateConfig(c);const id=randomUUID(),{files,commits}=await prepareWorkspace(c,id);",
+      "language": "typescript",
+      "explanation": "Accept only a listed authoring mode and a bounded single-line description. The browser cannot provide executable skill frontmatter or arbitrary filesystem paths.",
+      "firstLine": 134,
+      "lastLine": 134,
+      "anchors": [
+        "c=validateConfig(c);const id=randomUUID(),{files,commits}=await prepareWorkspace(c,id);"
+      ],
+      "sourceSHA256": "43772c2914874f94bedc39d7917c713863ac17cff3583dc5311645bcdeff3b3c",
+      "narration": "Step 1. Accept only a listed authoring mode and a bounded single-line description. The browser cannot provide executable skill frontmatter or arbitrary filesystem paths. This source excerpt shows the corresponding application statement."
+    },
+    {
+      "number": 2,
+      "title": "Build YAML frontmatter and Markdown",
+      "source": "src/agent.ts",
+      "code": "const approvals=c.mode===\"frontmatter\" ? \"allowed-tools: Read, Grep, Glob\\n\" : \"\";\n const target=cwd ? resolve(cwd,\"scan/app.js\").replaceAll(\"\\\\\",\"/\") : \"scan/app.js\";",
+      "language": "typescript",
+      "explanation": "The trusted template supplies the skill name, an encoded student description, optional allowed-tools and the read-only workflow body.",
+      "firstLine": 32,
+      "lastLine": 33,
+      "anchors": [
+        "const approvals=c.mode===\"frontmatter\" ? \"allowed-tools: Read, Grep, Glob\\n\" : \"\";"
+      ],
+      "sourceSHA256": "43772c2914874f94bedc39d7917c713863ac17cff3583dc5311645bcdeff3b3c",
+      "narration": "Step 2. The trusted template supplies the skill name, an encoded student description, optional allowed-tools and the read-only workflow body. This source excerpt shows the corresponding application statement."
+    },
+    {
+      "number": 3,
+      "title": "Choose project or personal location",
+      "source": "src/agent.ts",
+      "code": "const d=directories(c,id),base=c.mode===\"personal\" ? resolve(d.sdkHome,\"skills\") : resolve(d.cwd,\".claude/skills\");",
+      "language": "typescript",
+      "explanation": "Write real SKILL.md files in the owned project skills directory or the private user skills directory. Those locations correspond to selected setting sources.",
+      "firstLine": 62,
+      "lastLine": 62,
+      "anchors": [
+        "const d=directories(c,id),base=c.mode===\"personal\" ? resolve(d.sdkHome,\"skills\") : resolve(d.cwd,\".claude/skills\");"
+      ],
+      "sourceSHA256": "43772c2914874f94bedc39d7917c713863ac17cff3583dc5311645bcdeff3b3c",
+      "narration": "Step 3. Write real SKILL.md files in the owned project skills directory or the private user skills directory. Those locations correspond to selected setting sources. This source excerpt shows the corresponding application statement."
+    },
+    {
+      "number": 4,
+      "title": "Save the authored skill files",
+      "source": "src/agent.ts",
+      "code": "for(const file of files)await writeFile(file.path,file.contents);",
+      "language": "typescript",
+      "explanation": "Save actual filesystem artifacts before query. The host viewer shows their contents without copying them into the task prompt.",
+      "firstLine": 69,
+      "lastLine": 69,
+      "anchors": [
+        "for(const file of files)await writeFile(file.path,file.contents);"
+      ],
+      "sourceSHA256": "43772c2914874f94bedc39d7917c713863ac17cff3583dc5311645bcdeff3b3c",
+      "narration": "Step 4. Save actual filesystem artifacts before query. The host viewer shows their contents without copying them into the task prompt. This source excerpt shows the corresponding application statement."
+    },
+    {
+      "number": 5,
+      "title": "Export actual classroom Git history",
+      "source": "src/agent.ts",
+      "code": "const {stdout}=await git(\"log\",\"-2\",\"--format=%h%x09%s\");\n return stdout.trim().split(\"\\n\").map(line=>{const [hash,subject]=line.trim().split(\"\\t\");return {hash,subject};});",
+      "language": "typescript",
+      "explanation": "The release exercise creates two commits in an owned repository and exports their actual short hashes and subjects. The model reads that export without running Git.",
+      "firstLine": 58,
+      "lastLine": 59,
+      "anchors": [
+        "const {stdout}=await git(\"log\",\"-2\",\"--format=%h%x09%s\");"
+      ],
+      "sourceSHA256": "43772c2914874f94bedc39d7917c713863ac17cff3583dc5311645bcdeff3b3c",
+      "narration": "Step 5. The release exercise creates two commits in an owned repository and exports their actual short hashes and subjects. The model reads that export without running Git. This source excerpt shows the corresponding application statement."
+    },
+    {
+      "number": 6,
+      "title": "Select the matching discovery source",
+      "source": "src/agent.ts",
+      "code": "settingSources:c.mode===\"missing\" ? [] : c.mode===\"personal\" ? [\"user\"] : [\"project\"],skills:\"all\",",
+      "language": "typescript",
+      "explanation": "Project and user modes load their authored skills. The missing-source case uses [] while the files remain present.",
+      "firstLine": 98,
+      "lastLine": 98,
+      "anchors": [
+        "settingSources:c.mode===\"missing\" ? [] : c.mode===\"personal\" ? [\"user\"] : [\"project\"],skills:\"all\","
+      ],
+      "sourceSHA256": "43772c2914874f94bedc39d7917c713863ac17cff3583dc5311645bcdeff3b3c",
+      "narration": "Step 6. Project and user modes load their authored skills. The missing-source case uses [] while the files remain present. This source excerpt shows the corresponding application statement."
+    },
+    {
+      "number": 7,
+      "title": "Pre-approve through code or frontmatter",
+      "source": "src/agent.ts",
+      "code": "allowedTools:c.mode===\"frontmatter\" ? [\"Skill\"] : [\"Read\",\"Grep\",\"Glob\",\"Skill\"],",
+      "language": "typescript",
+      "explanation": "Session mode pre-approves Read, Grep, Glob and Skill. Frontmatter mode leaves only Skill in query allowedTools and pre-approves the file tools in SKILL.md.",
+      "firstLine": 100,
+      "lastLine": 100,
+      "anchors": [
+        "allowedTools:c.mode===\"frontmatter\" ? [\"Skill\"] : [\"Read\",\"Grep\",\"Glob\",\"Skill\"],"
+      ],
+      "sourceSHA256": "43772c2914874f94bedc39d7917c713863ac17cff3583dc5311645bcdeff3b3c",
+      "narration": "Step 7. Session mode pre-approves Read, Grep, Glob and Skill. Frontmatter mode leaves only Skill in query allowedTools and pre-approves the file tools in SKILL.md. This source excerpt shows the corresponding application statement."
+    },
+    {
+      "number": 8,
+      "title": "Enforce the host tool boundary",
+      "source": "src/agent.ts",
+      "code": "if(name===\"Read\" && typeof input.file_path===\"string\")return [\"scan/app.js\",\"commit-history.json\"].some(file=>resolve(cwd,input.file_path as string).toLowerCase()===resolve(cwd,file).toLowerCase());",
+      "language": "typescript",
+      "explanation": "Explicit tools and exact-target checks enforce access independently of pre-approval. Only the authored sample and commit export can be read.",
+      "firstLine": 87,
+      "lastLine": 87,
+      "anchors": [
+        "if(name===\"Read\" && typeof input.file_path===\"string\")return [\"scan/app.js\",\"commit-history.json\"].some(file=>resolve(cwd,input.file_path as string).toLowerCase()===resolve(cwd,file).toLowerCase());"
+      ],
+      "sourceSHA256": "43772c2914874f94bedc39d7917c713863ac17cff3583dc5311645bcdeff3b3c",
+      "narration": "Step 8. Explicit tools and exact-target checks enforce access independently of pre-approval. Only the authored sample and commit export can be read. This source excerpt shows the corresponding application statement."
+    },
+    {
+      "number": 9,
+      "title": "Choose slash dispatch or a natural request",
+      "source": "src/agent.ts",
+      "code": "const prompt=c.mode===\"release\" ? PROMPTS.release : c.mode===\"missing\" ? PROMPTS.plain : [\"auto\",\"tuned\"].includes(c.mode) ? PROMPTS.auto : PROMPTS.dispatch;",
+      "language": "typescript",
+      "explanation": "Direct /security-check and /release-notes dispatch are separate from model invocation on a matching natural security-review request.",
+      "firstLine": 140,
+      "lastLine": 140,
+      "anchors": [
+        "const prompt=c.mode===\"release\" ? PROMPTS.release : c.mode===\"missing\" ? PROMPTS.plain : [\"auto\",\"tuned\"].includes(c.mode) ? PROMPTS.auto : PROMPTS.dispatch;"
+      ],
+      "sourceSHA256": "43772c2914874f94bedc39d7917c713863ac17cff3583dc5311645bcdeff3b3c",
+      "narration": "Step 9. Direct /security-check and /release-notes dispatch are separate from model invocation on a matching natural security-review request. This source excerpt shows the corresponding application statement."
+    },
+    {
+      "number": 10,
+      "title": "Start the real SDK query",
+      "source": "src/agent.ts",
+      "code": "const run=query({prompt,options});",
+      "language": "typescript",
+      "explanation": "The SDK discovers authored skills and loads the selected workflow. Its native message and tool loop produce the actual report.",
+      "firstLine": 142,
+      "lastLine": 142,
+      "anchors": [
+        "const run=query({prompt,options});"
+      ],
+      "sourceSHA256": "43772c2914874f94bedc39d7917c713863ac17cff3583dc5311645bcdeff3b3c",
+      "narration": "Step 10. The SDK discovers authored skills and loads the selected workflow. Its native message and tool loop produce the actual report. This source excerpt shows the corresponding application statement."
+    },
+    {
+      "number": 11,
+      "title": "Record completed tools independently",
+      "source": "src/agent.ts",
+      "code": "completedTools.push({name:input.tool_name,target});",
+      "language": "typescript",
+      "explanation": "A successful PostToolUse hook records the actual file or skill target. The fallback callback separately records any unapproved tool request.",
+      "firstLine": 115,
+      "lastLine": 115,
+      "anchors": [
+        "completedTools.push({name:input.tool_name,target});"
+      ],
+      "sourceSHA256": "43772c2914874f94bedc39d7917c713863ac17cff3583dc5311645bcdeff3b3c",
+      "narration": "Step 11. A successful PostToolUse hook records the actual file or skill target. The fallback callback separately records any unapproved tool request. This source excerpt shows the corresponding application statement."
+    },
+    {
+      "number": 12,
+      "title": "Verify the required data Read",
+      "source": "src/agent.ts",
+      "code": "const required=mode===\"release\" ? \"commit-history.json\" : \"scan/app.js\";\n return tools.some(t=>t.name===\"Read\" && t.target===required);",
+      "language": "typescript",
+      "explanation": "A successful SDK result alone is not enough. The host requires a completed Read of the correct sample or commit export; otherwise findings are labelled unverified. Original SDK status and text are retained.",
+      "firstLine": 130,
+      "lastLine": 131,
+      "anchors": [
+        "const required=mode===\"release\" ? \"commit-history.json\" : \"scan/app.js\";"
+      ],
+      "sourceSHA256": "43772c2914874f94bedc39d7917c713863ac17cff3583dc5311645bcdeff3b3c",
+      "narration": "Step 12. A successful SDK result alone is not enough. The host requires a completed Read of the correct sample or commit export; otherwise findings are labelled unverified. Original SDK status and text are retained. This source excerpt shows the corresponding application statement."
+    },
+    {
+      "number": 13,
+      "title": "Render findings as readable content",
+      "source": "src/client.ts",
+      "code": "if (e.type === \"answer\") renderMarkdown($(\"answer\"), e.text);",
+      "language": "typescript",
+      "explanation": "Parse and sanitize real assistant Markdown. Keep findings, discovery, successful tools, approvals and Git evidence separate.",
+      "firstLine": 19,
+      "lastLine": 19,
+      "anchors": [
+        "if (e.type === \"answer\") renderMarkdown($(\"answer\"), e.text);"
+      ],
+      "sourceSHA256": "9a5f5ac2c10b6172f760f15404131de96f0a02d04670b00c6df12bb089f823f6",
+      "narration": "Step 13. Parse and sanitize real assistant Markdown. Keep findings, discovery, successful tools, approvals and Git evidence separate. This source excerpt shows the corresponding application statement."
+    }
+  ]
+}
